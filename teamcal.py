@@ -12,11 +12,11 @@ flask_app = Flask("ghscal")
 @flask_app.route("/ghscal/<string:part1>/<string:part2>/<string:part3>", methods=['GET'])
 
 def getcal(part1, part2, part3):
-    
+
     cal = Calendar.from_ical(requests.get(url).text)
 
     #print(cal.to_ical().decode("utf-8").replace('\r\n', '\n').strip())
-    
+
     match = [part1, part2, part3]
     match = [element.lower() for element in match]
     newcal = Calendar()
@@ -30,14 +30,14 @@ def getcal(part1, part2, part3):
         if all(any(sub in string for string in desc) for sub in match):
             component.get("description")
             newcal.add_component(component)
-            comp_count += 1        
+            comp_count += 1
 
     newcal.add('X-WR-CALNAME', f'{part1.title()} {part2.title()} {part3.title()}')
 
     response = make_response(newcal.to_ical().decode("utf-8").replace('\r\n', '\n').strip())
     response.headers['Content-Type'] = 'text/calendar'
     response.headers['Content-Disposition'] = f'inline; filename="{part1.title()}{part2.title()}{part3.title()}.ics"'
-    
+
     if comp_count == 0:
         return(abort(200))
     else:
@@ -45,6 +45,6 @@ def getcal(part1, part2, part3):
 
 #getcal("boys", "freshmen", "lacrosse")
 
-  
+
 if __name__ == "__main__":
-    flask_app.run(host="0.0.0.0", port=8080, debug=True)
+    flask_app.run(host="0.0.0.0", port=8081, debug=True)
