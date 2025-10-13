@@ -1,0 +1,15 @@
+[Unit]
+Description=Team Calendar service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=puskar
+ExecStart=/home/puskar/teamcal/.venv/bin/python /home/puskar/teamcal/teamcal.py
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target
