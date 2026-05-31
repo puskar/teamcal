@@ -46,7 +46,7 @@ def getcal(part1, part2, part3):
     response.headers['Content-Disposition'] = f'inline; filename="{part1.title()}{part2.title()}{part3.title()}.ics"'
 
     if comp_count == 0:
-        return(abort(200))
+        return(abort(404, description="No events found matching the criteria."))  
     else:
         return(response)
 
