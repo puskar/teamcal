@@ -1,10 +1,17 @@
 import requests
 from icalendar import Calendar, Event
-from flask import Flask, abort, make_response, render_template
+from flask import Flask, abort, make_response, render_template,redirect, request
 
 url = "https://www2.arbitersports.com/ICal/School/schedule.ics?id=cHHWgTXR%2b%2fvlYfnDlphDuQ%3d%3d"
 
 flask_app = Flask("ghscal")
+flask_app.url_map.strict_slashes = False
+
+@flask_app.before_request
+def clear_trailing():
+    rp = request.path 
+    if rp != '/' and rp.endswith('/'):
+        return redirect(rp[:-1])
 
 @flask_app.route("/ghscal/", methods=['GET'], defaults={'part1': '', 'part2': '', 'part3': ''})
 @flask_app.route("/ghscal/<string:part1>", methods=['GET'], defaults={'part2': '', 'part3': ''})
